@@ -3,13 +3,20 @@ print("X O X\n""O X O\n""X X O")
 # Этап 2. Игровое поле
 def tictactoeboard():
     tttb = list(input('Enter cells: '))
-    print(tttb)
     print('---------')
     print('| ' + tttb[0] + ' ' + tttb[1] + ' ' + tttb[2] + ' |')
     print('| ' + tttb[3] + ' ' + tttb[4] + ' ' + tttb[5] + ' |')
     print('| ' + tttb[6] + ' ' + tttb[7] + ' ' + tttb[8] + ' |')
     print('---------')
     return tttb
+
+def tictactoeboardprint(tttb):
+    print('---------')
+    print('| ' + tttb[0] + ' ' + tttb[1] + ' ' + tttb[2] + ' |')
+    print('| ' + tttb[3] + ' ' + tttb[4] + ' ' + tttb[5] + ' |')
+    print('| ' + tttb[6] + ' ' + tttb[7] + ' ' + tttb[8] + ' |')
+    print('---------')
+
 tictactoeboard()
 # Этап 3. Вводимые данные
 data_list = tictactoeboard()
@@ -40,4 +47,26 @@ else:
         if "_" not in data_list:
             print("Draw")
         elif "_" in data_list:
-            print("Game not finished")
+            print("Game not finished")XX_OOO___
+# Этап 4. Коррективы
+list_coords = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+
+data_list = tictactoeboard()
+while True:
+    coord_step = input("Enter the coordinates: ")
+    try:
+        coord_data1 = int((coord_step.split(" "))[0])
+        coord_data2 = int((coord_step.split(" "))[1])
+    except:
+        print("You should enter numbers!")
+        continue
+    if coord_data1 > 3 or coord_data1 < 1 or coord_data2 > 3 or coord_data2 < 1:
+        print("Coordinates should be from 1 to 3!")
+        continue
+    coord_place = list_coords[coord_data1-1][coord_data2-1]
+    if data_list[coord_place] != "_":
+        print("This cell is occupied! Choose another one!")
+        continue
+    data_list[coord_place] = "X"
+    tictactoeboardprint(data_list)
+    break
