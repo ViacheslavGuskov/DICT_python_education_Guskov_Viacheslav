@@ -20,13 +20,21 @@ one_pay = round(total_counts / count_human, 2)
 for one_key in dict_human.keys():
     dict_human[one_key] = one_pay
 
-# Этап 3. "Who is lucky?"
+# Этап 3-4. "Who is lucky?"
 print("""Do you want to use the "Who is lucky?" feature? Write Yes/No:""")
 user_lucky_answer = input("> ")
+
 if user_lucky_answer == "Yes":
     user_lucky = random.choice(list(dict_human.keys()))
     print(user_lucky + " is the lucky one!")
+    one_pay_l = round(total_counts / (count_human - 1), 2)
+    for one_key in dict_human.keys():
+        if one_key == user_lucky:
+            dict_human[one_key] = 0
+        else:
+            dict_human[one_key] = one_pay_l
+    print(dict_human)
+
 if user_lucky_answer == "No":
     print("No one is going to be lucky.")
-
-print(dict_human)
+    print(dict_human)
