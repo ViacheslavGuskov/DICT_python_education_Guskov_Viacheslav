@@ -10,4 +10,12 @@ dict_human = {}
 for ii in range(count_human):
     dict_human[input("> ")] = 0
 
+# Этап 2. Разделение счёта меж участниками вечеринки
+print("Enter the total amount:")
+total_counts = int(input("> "))
+one_pay = round(total_counts / count_human, 2)
+
+for one_key in dict_human.keys():
+    dict_human[one_key] = one_pay
+
 print(dict_human)
