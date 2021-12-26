@@ -107,6 +107,7 @@ while True:
                 computer_get = random.choice(stock_pieces)
                 stock_pieces.remove(computer_get)
                 computer_pieces.append(computer_get)
+                status = "player"
                 continue
             computer_piece_add = computer_pieces_tmp[place_piece]
             if domino_snake[-1][1] == computer_piece_add[0]:
