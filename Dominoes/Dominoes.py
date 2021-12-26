@@ -1,4 +1,28 @@
 import random
+
+def count_price(domino_snake, computer_pieces):
+    total_list = []
+    for one_p in domino_snake:
+        total_list += one_p
+    for one_p in computer_pieces:
+        total_list += one_p
+    price_list = []
+    for one_price in range(7):
+        one_price_total = 0
+        for ii in total_list:
+            if one_price == ii:
+                one_price_total += 1
+        price_list.append(one_price_total)
+    return price_list
+
+def price_computer_pieces(price_list, computer_pieces):
+    price_computer_list = []
+    for one_computer_piece in computer_pieces:
+        add_piece = price_list[one_computer_piece[0]] + price_list[one_computer_piece[1]]
+        price_computer_list.append(add_piece)
+    return price_computer_list
+
+
 while True:
     stock_pieces = [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6],\
         [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [3, 3], [3, 4], [3, 5], [3, 6], [4, 4], [4, 5], [4, 6], [5, 5], [5, 6], [6, 6]]
@@ -71,45 +95,52 @@ while True:
                 break
     if status == "computer":
         print("\nStatus: Computer is about to make a move. Press Enter to continue...")
-        input_res = input("")
+        input_res = input("> ")
         step_computer = 1
+        computer_pieces_tmp = list(computer_pieces)
+        price_list = count_price(domino_snake, computer_pieces)
+        price_computer_list = price_computer_pieces(price_list, computer_pieces)
         while step_computer == 1:
-            place_piece = random.choice(range(-(len(computer_pieces)), len(computer_pieces)))
-            if place_piece == 0:
+            max_price = max(price_computer_list)
+            place_piece = price_computer_list.index(max_price)
+            if len(computer_pieces_tmp) == 0:
                 computer_get = random.choice(stock_pieces)
                 stock_pieces.remove(computer_get)
                 computer_pieces.append(computer_get)
-            elif place_piece > 0:
-                computer_piece_add = computer_pieces[place_piece-1]
-                if domino_snake[-1][1] == computer_piece_add[0]:
-                    domino_snake.append(computer_piece_add)
-                    computer_pieces.remove(computer_piece_add)
-                    step_computer = 0
-                elif domino_snake[-1][1] == computer_piece_add[1]:
-                    computer_piece_add = [computer_pieces[place_piece-1][1], computer_pieces[place_piece-1][0]]
-                    domino_snake.append(computer_piece_add)
-                    computer_pieces.remove(computer_pieces[place_piece-1])
-                    step_computer = 0
-                else:
-                    pass
-            elif place_piece < 0:
-                computer_piece_add = computer_pieces[-place_piece-1]
-                if domino_snake[0][0] == computer_piece_add[1]:
-                    domino_snake.insert(0, computer_piece_add)
-                    computer_pieces.remove(computer_piece_add)
-                    step_computer = 0
-                elif domino_snake[0][0] == computer_piece_add[0]:
-                    computer_piece_add = [computer_pieces[-place_piece-1][1], computer_pieces[-place_piece-1][0]]
-                    domino_snake.insert(0, computer_piece_add)
-                    computer_pieces.remove(computer_pieces[-place_piece-1])
-                    step_computer = 0
-                else:
-                    pass
-        status = "player"
+                continue
+            computer_piece_add = computer_pieces_tmp[place_piece]
+            if domino_snake[-1][1] == computer_piece_add[0]:
+                domino_snake.append(computer_piece_add)
+                computer_pieces.remove(computer_piece_add)
+                step_computer = 0
+                status = "player"
+                continue
+            if domino_snake[-1][1] == computer_piece_add[1]:
+                computer_piece_add = [computer_pieces[place_piece-1][1], computer_pieces[place_piece-1][0]]
+                domino_snake.append(computer_piece_add)
+                computer_pieces.remove(computer_pieces[place_piece-1])
+                step_computer = 0
+                status = "player"
+                continue
+            if domino_snake[0][0] == computer_piece_add[1]:
+                domino_snake.insert(0, computer_piece_add)
+                computer_pieces.remove(computer_piece_add)
+                step_computer = 0
+                status = "player"
+                continue
+            if domino_snake[0][0] == computer_piece_add[0]:
+                computer_piece_add = [computer_pieces[-place_piece-1][1], computer_pieces[-place_piece-1][0]]
+                domino_snake.insert(0, computer_piece_add)
+                computer_pieces.remove(computer_pieces[-place_piece-1])
+                step_computer = 0
+                status = "player"
+                continue
+            del computer_pieces_tmp[place_piece]
+            del price_computer_list[place_piece]
     elif status == "player":
         print("\nStatus: It's your turn to make a move. Enter your command.")
         try:
-            input_res = int(input(""))
+            input_res = int(input("> "))
         except:
             print("Invalid input. Please try again.")
             continue
