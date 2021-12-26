@@ -72,17 +72,39 @@ while True:
     if status == "computer":
         print("\nStatus: Computer is about to make a move. Press Enter to continue...")
         input_res = input("")
-        place_piece = random.choice(range(-(len(computer_pieces)), len(computer_pieces)))
-        if place_piece == 0:
-            computer_get = random.choice(stock_pieces)
-            stock_pieces.remove(computer_get)
-            computer_pieces.append(computer_get)
-        elif place_piece > 0:
-            domino_snake.append(computer_pieces[place_piece-1])
-            computer_pieces.remove(computer_pieces[place_piece-1])
-        elif place_piece < 0:
-            domino_snake.insert(0, computer_pieces[-place_piece-1])
-            computer_pieces.remove(computer_pieces[-place_piece-1])
+        step_computer = 1
+        while step_computer == 1:
+            place_piece = random.choice(range(-(len(computer_pieces)), len(computer_pieces)))
+            if place_piece == 0:
+                computer_get = random.choice(stock_pieces)
+                stock_pieces.remove(computer_get)
+                computer_pieces.append(computer_get)
+            elif place_piece > 0:
+                computer_piece_add = computer_pieces[place_piece-1]
+                if domino_snake[-1][1] == computer_piece_add[0]:
+                    domino_snake.append(computer_piece_add)
+                    computer_pieces.remove(computer_piece_add)
+                    step_computer = 0
+                elif domino_snake[-1][1] == computer_piece_add[1]:
+                    computer_piece_add = [computer_pieces[place_piece-1][1], computer_pieces[place_piece-1][0]]
+                    domino_snake.append(computer_piece_add)
+                    computer_pieces.remove(computer_pieces[place_piece-1])
+                    step_computer = 0
+                else:
+                    pass
+            elif place_piece < 0:
+                computer_piece_add = computer_pieces[-place_piece-1]
+                if domino_snake[0][0] == computer_piece_add[1]:
+                    domino_snake.insert(0, computer_piece_add)
+                    computer_pieces.remove(computer_piece_add)
+                    step_computer = 0
+                elif domino_snake[0][0] == computer_piece_add[0]:
+                    computer_piece_add = [computer_pieces[-place_piece-1][1], computer_pieces[-place_piece-1][0]]
+                    domino_snake.insert(0, computer_piece_add)
+                    computer_pieces.remove(computer_pieces[-place_piece-1])
+                    step_computer = 0
+                else:
+                    pass
         status = "player"
     elif status == "player":
         print("\nStatus: It's your turn to make a move. Enter your command.")
@@ -99,9 +121,27 @@ while True:
             stock_pieces.remove(player_get)
             player_pieces.append(player_get)
         elif input_res > 0:
-            domino_snake.append(player_pieces[input_res-1])
-            player_pieces.remove(player_pieces[input_res-1])
+            player_piece_add = player_pieces[input_res-1]
+            if domino_snake[-1][1] == player_piece_add[0]:
+                domino_snake.append(player_piece_add)
+                player_pieces.remove(player_piece_add)
+            elif domino_snake[-1][1] == player_piece_add[1]:
+                player_piece_add = [player_pieces[input_res-1][1], player_pieces[input_res-1][0]]
+                domino_snake.append(player_piece_add)
+                player_pieces.remove(player_pieces[input_res-1])
+            else:
+                print("Illegal move. Please try again.")
+                continue
         elif input_res < 0:
-            domino_snake.insert(0, player_pieces[-input_res-1])
-            player_pieces.remove(player_pieces[-input_res-1])
+            player_piece_add = player_pieces[-input_res-1]
+            if domino_snake[0][0] == player_piece_add[1]:
+                domino_snake.insert(0, player_piece_add)
+                player_pieces.remove(player_piece_add)
+            elif domino_snake[0][0] == player_piece_add[0]:
+                player_piece_add = [player_pieces[-input_res-1][1], player_pieces[-input_res-1][0]]
+                domino_snake.insert(0, player_piece_add)
+                player_pieces.remove(player_pieces[-input_res-1])
+            else:
+                print("Illegal move. Please try again.")
+                continue
         status = "computer"
