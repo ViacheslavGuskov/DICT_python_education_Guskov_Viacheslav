@@ -36,8 +36,20 @@ if max(double_computer_pieces) < max(double_player_pieces):
     domino_snake.append([max(double_player_pieces)//2, max(double_player_pieces)//2])
     player_pieces.remove([max(double_player_pieces)//2, max(double_player_pieces)//2])
 
-print("Stock pieces: "+str(stock_pieces))
-print("Computer pieces: "+str(computer_pieces))
-print("Player pieces: "+str(player_pieces))
-print("Domino snake: "+str(domino_snake))
-print("Status: "+str(status))
+
+print("=" * 70)
+print("Stock size: " + str(len(stock_pieces)))
+print("Computer pieces: " + str(len(computer_pieces)))
+domino_snake_text = "\n"
+for domino_snake_one in domino_snake:
+    domino_snake_text += str(domino_snake_one)
+print(domino_snake_text)
+print("\nYour pieces: ")
+count = 1
+for player_piece_one in player_pieces:
+    print(str(count)+":"+str(player_piece_one))
+    count += 1
+if status == "computer":
+    print("\nStatus: Computer is about to make a move. Press Enter to continue...")
+if status == "player":
+    print("\nStatus: It's your turn to make a move. Enter your command.")
